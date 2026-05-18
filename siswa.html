@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard Siswa</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#f5f8ff;
+}
+
+</style>
+
+</head>
+
+<body class="flex items-center justify-center p-4">
+
+<div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl p-7">
+
+<!-- HEADER -->
+
+<div class="mb-6">
+
+<h1 class="text-2xl font-bold text-blue-900">
+Dashboard Peserta
+</h1>
+
+<p class="text-sm text-slate-500 mt-1">
+Pastikan data sudah benar sebelum memulai ujian.
+</p>
+
+</div>
+
+<!-- LOADING -->
+
+<div
+id="loadingBox"
+class="bg-blue-50 border border-blue-100 text-blue-700 rounded-2xl p-4 text-sm flex items-center gap-3">
+
+<div class="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin">
+</div>
+
+<span>
+Memuat data peserta...
+</span>
+
+</div>
+
+<!-- ERROR -->
+
+<div
+id="errorBox"
+class="hidden mt-4 bg-red-50 border border-red-200 text-red-600 p-4 rounded-2xl text-sm">
+</div>
+
+<!-- FORM -->
+
+<form
+id="confirmForm"
+class="mt-5 space-y-4">
+
+<!-- NISN -->
+
+<div>
+
+<label class="text-sm font-semibold text-slate-700">
+NISN
+</label>
+
+<input
+type="text"
+id="nisn"
+readonly
+class="w-full mt-2 h-12 rounded-2xl border border-slate-200 bg-slate-50 px-4 outline-none">
+
+</div>
+
+<!-- NAMA -->
+
+<div>
+
+<label class="text-sm font-semibold text-slate-700">
+Nama Peserta
+</label>
+
+<input
+type="text"
+id="nama"
+readonly
+class="w-full mt-2 h-12 rounded-2xl border border-slate-200 bg-slate-50 px-4 outline-none">
+
+</div>
+
+<!-- KELAS -->
+
+<div>
+
+<label class="text-sm font-semibold text-slate-700">
+Kelas
+</label>
+
+<input
+type="text"
+id="kelas"
+readonly
+class="w-full mt-2 h-12 rounded-2xl border border-slate-200 bg-slate-50 px-4 outline-none">
+
+</div>
+
+<!-- MAPEL -->
+
+<div>
+
+<label class="text-sm font-semibold text-slate-700">
+Mata Pelajaran
+</label>
+
+<select
+id="mapelDropdown"
+class="w-full mt-2 h-12 rounded-2xl border border-slate-200 px-4 outline-none bg-white">
+
+<option value="">
+Pilih Mata Pelajaran
+</option>
+
+</select>
+
+</div>
+
+<!-- BUTTON -->
+
+<button
+id="btnMulai"
+type="submit"
+class="w-full h-12 rounded-2xl bg-blue-800 hover:bg-blue-900 transition-all duration-300 text-white font-semibold">
+
+Kerjakan Ujian
+
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+/*
+=========================================
+API URL
+=========================================
+*/
+
+const USER_API =
+"https://script.google.com/macros/s/AKfycbwoRPW1RHKRfsLsqbVvGm8MuFJNx65UaJnqx6Pz3MZBDU1kEx873JCPcVjYbqW_72Se/exec";
+
+const MAPEL_API =
+"https://script.google.com/macros/s/AKfycbzfctJYw8uBLfxAAavuI79WtEVio5_X3MIcEyy9F1lqvobc7pftnKJwDnuGhbJ-X2hG/exec";
+
+
+/*
+=========================================
+ELEMENT
+=========================================
+*/
+
+const loadingBox =
+document.getElementById("loadingBox");
+
+const errorBox =
+document.getElementById("errorBox");
+
+const dropdown =
+document.getElementById("mapelDropdown");
+
+
+/*
+=========================================
+CEK LOGIN
+=========================================
+*/
+
+const username =
+localStorage.getItem("username");
+
+if(!username){
+
+  window.location.href =
+  "index.html";
+
+}
+
+
+/*
+=========================================
+SHOW ERROR
+=========================================
+*/
+
+function showError(message){
+
+  errorBox.classList.remove("hidden");
+
+  errorBox.innerHTML = message;
+
+}
+
+
+/*
+=========================================
+LOAD USER
+=========================================
+*/
+
+async function loadUser(){
+
+  try{
+
+    const response =
+    await fetch(
+      USER_API +
+      "?action=getUser&username=" +
+      encodeURIComponent(username)
+    );
+
+    const result =
+    await response.json();
+
+    if(result.success){
+
+      document.getElementById("nisn").value =
+      result.nisn || "-";
+
+      document.getElementById("nama").value =
+      result.nama || "-";
+
+      document.getElementById("kelas").value =
+      result.kelas || "-";
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    showError(
+      "Gagal mengambil data siswa."
+    );
+
+  }
+
+}
+
+
+/*
+=========================================
+LOAD MAPEL
+=========================================
+*/
+
+async function loadMapel(){
+
+  try{
+
+    const response =
+    await fetch(
+      MAPEL_API +
+      "?action=getMapel"
+    );
+
+    const result =
+    await response.json();
+
+    dropdown.innerHTML =
+    '<option value="">Pilih Mata Pelajaran</option>';
+
+    if(
+      result.success &&
+      Array.isArray(result.data)
+    ){
+
+      result.data.forEach((item)=>{
+
+        const option =
+        document.createElement("option");
+
+        option.value =
+        item.link_soal;
+
+        option.textContent =
+        item.nama_mapel;
+
+        dropdown.appendChild(option);
+
+      });
+
+    }
+
+  }
+
+  catch(error){
+
+    console.log(error);
+
+    showError(
+      "Gagal mengambil mata pelajaran."
+    );
+
+  }
+
+}
+
+
+/*
+=========================================
+INIT
+=========================================
+*/
+
+async function init(){
+
+  await loadUser();
+
+  await loadMapel();
+
+  loadingBox.style.display =
+  "none";
+
+}
+
+init();
+
+
+/*
+=========================================
+SUBMIT
+=========================================
+*/
+
+document
+.getElementById("confirmForm")
+.addEventListener("submit",(e)=>{
+
+  e.preventDefault();
+
+  const link =
+  dropdown.value;
+
+  const mapel =
+  dropdown.options[
+    dropdown.selectedIndex
+  ].text;
+
+  // JIKA BELUM PILIH MAPEL
+  if(link === ""){
+
+    return;
+
+  }
+
+  // SIMPAN
+  localStorage.setItem(
+    "link_soal",
+    link
+  );
+
+  localStorage.setItem(
+    "nama_mapel",
+    mapel
+  );
+
+  // REDIRECT
+  window.location.href =
+  "soal-ujian.html";
+
+});
+
+</script>
+
+</body>
+</html>

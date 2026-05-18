@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CBT Ujian Online</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#eef3fb;
+}
+
+/* LOADING */
+
+#loading{
+  position:fixed;
+  inset:0;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:18px;
+  z-index:9999;
+}
+
+.loader{
+  width:50px;
+  height:50px;
+  border-radius:999px;
+  border:4px solid #dbeafe;
+  border-top:4px solid #1d4ed8;
+  animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+  100%{
+    transform:rotate(360deg);
+  }
+}
+
+/* TIMER */
+
+.timerPulse{
+  animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+  0%{
+    opacity:1;
+  }
+
+  50%{
+    opacity:.6;
+  }
+
+  100%{
+    opacity:1;
+  }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- LOADING -->
+
+<div id="loading">
+
+<div class="loader"></div>
+
+<p class="text-slate-600 text-sm font-medium">
+Memuat halaman ujian...
+</p>
+
+</div>
+
+<!-- WRAPPER -->
+
+<div class="w-full h-screen flex flex-col">
+
+<!-- HEADER -->
+
+<header class="h-16 bg-blue-900 text-white flex items-center justify-center shadow-lg relative shrink-0">
+
+<h1 class="font-extrabold tracking-wide text-lg md:text-xl">
+CBT UJIAN ONLINE
+</h1>
+
+</header>
+
+<!-- TOP BAR -->
+
+<div class="px-3 pt-3 shrink-0">
+
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 px-4 py-3 flex items-center justify-between gap-3">
+
+<!-- LEFT -->
+
+<div class="min-w-0">
+
+<p class="text-xs text-slate-400 font-medium">
+MATA PELAJARAN
+</p>
+
+<h2
+id="mapelText"
+class="font-bold text-slate-700 truncate text-sm md:text-base">
+
+Loading...
+
+</h2>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="flex items-center gap-2">
+
+<!-- TIMER -->
+
+<div
+id="timerBox"
+class="bg-blue-50 text-blue-800 rounded-xl px-4 h-11 flex items-center gap-2 border border-blue-100">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+class="w-5 h-5"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+
+</svg>
+
+<span
+id="timer"
+class="font-bold text-sm">
+
+00:00:00
+
+</span>
+
+</div>
+
+<!-- REFRESH -->
+
+<button
+id="refreshBtn"
+class="w-11 h-11 rounded-2xl bg-white text-blue-900 flex items-center justify-center shadow-sm border border-slate-200 hover:bg-blue-50 active:scale-90 transition-all duration-300">
+
+<!-- ICON REFRESH -->
+
+<svg xmlns="http://www.w3.org/2000/svg"
+class="w-5 h-5"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M4 4v5h.582M20 20v-5h-.581M5.23 9A9 9 0 0119 6.34L20 9m-1.23 6A9 9 0 015 17.66L4 15"/>
+
+</svg>
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- IFRAME -->
+
+<div class="flex-1 p-3 pt-3 min-h-0">
+
+<div class="w-full h-full bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200">
+
+<iframe
+id="examFrame"
+class="w-full h-full border-0"
+allowfullscreen>
+
+</iframe>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/*
+========================================
+SESSION
+========================================
+*/
+
+const username =
+localStorage.getItem("username");
+
+const linkSoal =
+localStorage.getItem("link_soal");
+
+const namaMapel =
+localStorage.getItem("nama_mapel");
+
+
+/*
+========================================
+VALIDASI
+========================================
+*/
+
+if(
+  !username ||
+  !linkSoal ||
+  !namaMapel
+){
+
+  window.location.href =
+  "index.html";
+
+}
+
+
+/*
+========================================
+ELEMENT
+========================================
+*/
+
+const iframe =
+document.getElementById("examFrame");
+
+const mapelText =
+document.getElementById("mapelText");
+
+const loading =
+document.getElementById("loading");
+
+const refreshBtn =
+document.getElementById("refreshBtn");
+
+const timerText =
+document.getElementById("timer");
+
+const timerBox =
+document.getElementById("timerBox");
+
+
+/*
+========================================
+LOAD EXAM
+========================================
+*/
+
+function loadExam(){
+
+  mapelText.innerText =
+  namaMapel;
+
+  iframe.src =
+  linkSoal;
+
+}
+
+loadExam();
+
+
+/*
+========================================
+REFRESH SOAL
+========================================
+*/
+
+refreshBtn.addEventListener(
+  "click",
+  ()=>{
+
+    iframe.src =
+    iframe.src;
+
+  }
+);
+
+
+/*
+========================================
+HIDE LOADING
+========================================
+*/
+
+iframe.onload = function(){
+
+  loading.style.display =
+  "none";
+
+};
+
+
+/*
+========================================
+TIMER
+========================================
+*/
+
+let totalSeconds = 0;
+
+function updateTimer(){
+
+  totalSeconds++;
+
+  const hours =
+  String(
+    Math.floor(totalSeconds / 3600)
+  ).padStart(2,"0");
+
+  const minutes =
+  String(
+    Math.floor((totalSeconds % 3600) / 60)
+  ).padStart(2,"0");
+
+  const seconds =
+  String(
+    totalSeconds % 60
+  ).padStart(2,"0");
+
+  timerText.innerText =
+  `${hours}:${minutes}:${seconds}`;
+
+  // WARNA SAAT LAMA
+  if(totalSeconds >= 3600){
+
+    timerBox.classList.remove(
+      "bg-blue-50",
+      "text-blue-800",
+      "border-blue-100"
+    );
+
+    timerBox.classList.add(
+      "bg-red-50",
+      "text-red-700",
+      "border-red-100",
+      "timerPulse"
+    );
+
+  }
+
+}
+
+setInterval(updateTimer,1000);
+
+</script>
+
+</body>
+</html>

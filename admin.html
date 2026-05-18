@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard - CBT SMKS 1 BARUNAWATI</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+tailwind.config = {
+theme:{
+extend:{
+colors:{
+primary:'#0037a3',
+dark:'#001d56'
+},
+fontFamily:{
+sans:['Plus Jakarta Sans','sans-serif']
+}
+}
+}
+}
+</script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html,
+body{
+width:100%;
+height:100%;
+overflow:hidden;
+}
+
+body{
+font-family:'Plus Jakarta Sans',sans-serif;
+background:#f5f8ff;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:260px;
+transition:.3s ease;
+}
+
+.sidebar.close{
+width:90px;
+}
+
+.sidebar.close .menu-text,
+.sidebar.close .logo-text,
+.sidebar.close .menu-title{
+display:none;
+}
+
+.sidebar.close .menu-btn{
+justify-content:center;
+}
+
+/* CARD */
+
+.card{
+background:rgba(255,255,255,.96);
+backdrop-filter:blur(10px);
+box-shadow:
+0 10px 30px rgba(0,0,0,.05),
+0 2px 8px rgba(0,0,0,.03);
+}
+
+/* SCROLL */
+
+.table-scroll{
+overflow:auto;
+}
+
+.table-scroll::-webkit-scrollbar{
+height:8px;
+width:8px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb{
+background:#cbd5e1;
+border-radius:999px;
+}
+
+/* LOADING */
+
+.loading{
+animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+0%{
+opacity:.5;
+}
+50%{
+opacity:1;
+}
+100%{
+opacity:.5;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="w-full h-screen flex overflow-hidden">
+
+<!-- SIDEBAR -->
+
+<aside
+id="sidebar"
+class="sidebar bg-gradient-to-b from-primary to-dark text-white flex flex-col shadow-2xl">
+
+<!-- LOGO -->
+
+<div class="h-20 px-4 flex items-center justify-between border-b border-white/10 shrink-0">
+
+<div class="flex items-center gap-3 overflow-hidden">
+
+<div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center overflow-hidden shrink-0 p-1">
+
+<img
+src="LOGO YSL TERBARU.jpg"
+class="w-full h-full object-contain">
+
+</div>
+
+<div class="logo-text">
+
+<h1 class="font-bold text-sm leading-tight whitespace-nowrap">
+SMKS 1 BARUNAWATI
+</h1>
+
+<p class="text-xs text-blue-100">
+CBT ADMIN
+</p>
+
+</div>
+
+</div>
+
+<button
+id="toggleSidebar"
+class="w-10 h-10 rounded-xl hover:bg-white/10 flex items-center justify-center transition-all">
+
+<svg xmlns="http://www.w3.org/2000/svg"
+class="w-5 h-5"
+fill="none"
+viewBox="0 0 24 24"
+stroke="currentColor">
+
+<path
+stroke-linecap="round"
+stroke-linejoin="round"
+stroke-width="2"
+d="M4 6h16M4 12h16M4 18h16"/>
+
+</svg>
+
+</button>
+
+</div>
+
+<!-- MENU -->
+
+<div class="flex-1 p-4 overflow-y-auto">
+
+<p class="menu-title text-xs text-blue-100 uppercase tracking-widest mb-3 px-3">
+Menu
+</p>
+
+<div class="space-y-2">
+
+<!-- DASHBOARD -->
+
+<button
+class="menu-btn w-full h-14 rounded-2xl bg-white/10 hover:bg-white/20 transition-all flex items-center gap-3 px-4">
+
+<div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+
+🏠
+
+</div>
+
+<div class="menu-text text-left">
+
+<p class="font-semibold text-sm">
+Dashboard
+</p>
+
+<p class="text-xs text-blue-100">
+Overview sistem
+</p>
+
+</div>
+
+</button>
+
+<!-- DATA SISWA -->
+
+<button
+onclick="window.location.href='datasiswa.html'"
+class="menu-btn w-full h-14 rounded-2xl hover:bg-white/10 transition-all flex items-center gap-3 px-4">
+
+<div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+
+👨‍🎓
+
+</div>
+
+<div class="menu-text text-left">
+
+<p class="font-semibold text-sm">
+Data Siswa
+</p>
+
+<p class="text-xs text-blue-100">
+Manajemen siswa
+</p>
+
+</div>
+
+</button>
+
+<!-- DATA MAPEL -->
+
+<button
+onclick="window.location.href='datamapel.html'"
+class="menu-btn w-full h-14 rounded-2xl hover:bg-white/10 transition-all flex items-center gap-3 px-4">
+
+<div class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+
+📚
+
+</div>
+
+<div class="menu-text text-left">
+
+<p class="font-semibold text-sm">
+Data Mapel
+</p>
+
+<p class="text-xs text-blue-100">
+Jadwal ujian
+</p>
+
+</div>
+
+</button>
+
+</div>
+
+</div>
+
+<!-- LOGOUT -->
+
+<div class="p-4 border-t border-white/10">
+
+<button
+id="logoutBtn"
+class="menu-btn w-full h-12 rounded-2xl bg-red-500/20 hover:bg-red-500/30 transition-all flex items-center gap-3 px-4">
+
+<div class="w-9 h-9 rounded-xl bg-red-500/20 flex items-center justify-center shrink-0">
+
+↩
+
+</div>
+
+<span class="menu-text font-semibold text-sm">
+Logout
+</span>
+
+</button>
+
+</div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="flex-1 overflow-hidden flex flex-col">
+
+<!-- HEADER -->
+
+<header class="h-20 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0">
+
+<div>
+
+<h2 class="text-2xl font-bold text-slate-800">
+Dashboard Admin
+</h2>
+
+<p class="text-sm text-slate-500 mt-1">
+Sistem CBT SMKS 1 BARUNAWATI
+</p>
+
+</div>
+
+<div class="flex items-center gap-3">
+
+<div class="text-right hidden md:block">
+
+<p class="font-semibold text-slate-700">
+Administrator
+</p>
+
+<p class="text-sm text-slate-500">
+CBT Center
+</p>
+
+</div>
+
+<div class="w-12 h-12 rounded-2xl bg-primary text-white flex items-center justify-center font-bold shadow-lg">
+A
+</div>
+
+</div>
+
+</header>
+
+<!-- CONTENT -->
+
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+
+<!-- STATS -->
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+
+<!-- TOTAL -->
+
+<div class="card rounded-3xl p-5">
+
+<div class="flex items-center justify-between">
+
+<div>
+
+<p class="text-sm text-slate-500">
+Total Siswa
+</p>
+
+<h3
+id="totalSiswa"
+class="text-3xl font-extrabold text-slate-800 mt-2 loading">
+
+0
+
+</h3>
+
+</div>
+
+<div class="w-14 h-14 rounded-2xl bg-blue-50 text-primary flex items-center justify-center text-2xl">
+
+👨‍🎓
+
+</div>
+
+</div>
+
+</div>
+
+<!-- X -->
+
+<div class="card rounded-3xl p-5">
+
+<div class="flex items-center justify-between">
+
+<div>
+
+<p class="text-sm text-slate-500">
+Kelas X
+</p>
+
+<h3
+id="kelasX"
+class="text-3xl font-extrabold text-slate-800 mt-2 loading">
+
+0
+
+</h3>
+
+</div>
+
+<div class="w-14 h-14 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl">
+
+🎓
+
+</div>
+
+</div>
+
+</div>
+
+<!-- XI -->
+
+<div class="card rounded-3xl p-5">
+
+<div class="flex items-center justify-between">
+
+<div>
+
+<p class="text-sm text-slate-500">
+Kelas XI
+</p>
+
+<h3
+id="kelasXI"
+class="text-3xl font-extrabold text-slate-800 mt-2 loading">
+
+0
+
+</h3>
+
+</div>
+
+<div class="w-14 h-14 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center text-2xl">
+
+📘
+
+</div>
+
+</div>
+
+</div>
+
+<!-- XII -->
+
+<div class="card rounded-3xl p-5">
+
+<div class="flex items-center justify-between">
+
+<div>
+
+<p class="text-sm text-slate-500">
+Kelas XII
+</p>
+
+<h3
+id="kelasXII"
+class="text-3xl font-extrabold text-slate-800 mt-2 loading">
+
+0
+
+</h3>
+
+</div>
+
+<div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-2xl">
+
+🏆
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- TABLE -->
+
+<div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
+
+<!-- SISWA -->
+
+<div class="xl:col-span-2 card rounded-3xl p-5">
+
+<div class="mb-5">
+
+<h3 class="font-bold text-slate-800 text-lg">
+Jumlah Siswa Perkelas
+</h3>
+
+<p class="text-sm text-slate-500">
+Data keseluruhan siswa
+</p>
+
+</div>
+
+<div class="table-scroll">
+
+<table class="w-full text-sm">
+
+<thead>
+
+<tr class="border-b border-slate-100">
+
+<th class="text-left py-3 text-slate-500 font-semibold">
+Kelas
+</th>
+
+<th class="text-right py-3 text-slate-500 font-semibold">
+Jumlah
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="kelasTable"
+class="divide-y divide-slate-100">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<!-- MAPEL -->
+
+<div class="xl:col-span-3 card rounded-3xl p-5">
+
+<div class="mb-5">
+
+<h3 class="font-bold text-slate-800 text-lg">
+Jadwal Ujian
+</h3>
+
+<p class="text-sm text-slate-500">
+Urutan berdasarkan tanggal & jam
+</p>
+
+</div>
+
+<div class="table-scroll">
+
+<table class="w-full min-w-[700px] text-sm">
+
+<thead>
+
+<tr class="border-b border-slate-100">
+
+<th class="text-left py-3 text-slate-500 font-semibold">
+Tanggal
+</th>
+
+<th class="text-left py-3 text-slate-500 font-semibold">
+Jam
+</th>
+
+<th class="text-left py-3 text-slate-500 font-semibold">
+Mata Pelajaran
+</th>
+
+<th class="text-left py-3 text-slate-500 font-semibold">
+Status
+</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="mapelTable"
+class="divide-y divide-slate-100">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+<script>
+
+/*
+========================================
+API
+========================================
+*/
+
+const USER_API =
+"https://script.google.com/macros/s/AKfycbwoRPW1RHKRfsLsqbVvGm8MuFJNx65UaJnqx6Pz3MZBDU1kEx873JCPcVjYbqW_72Se/exec";
+
+const MAPEL_API =
+"https://script.google.com/macros/s/AKfycbzfctJYw8uBLfxAAavuI79WtEVio5_X3MIcEyy9F1lqvobc7pftnKJwDnuGhbJ-X2hG/exec";
+
+
+/*
+========================================
+SIDEBAR
+========================================
+*/
+
+const sidebar =
+document.getElementById("sidebar");
+
+document
+.getElementById("toggleSidebar")
+.addEventListener("click",()=>{
+
+sidebar.classList.toggle("close");
+
+});
+
+
+/*
+========================================
+LOAD SISWA
+========================================
+*/
+
+async function loadSiswa(){
+
+try{
+
+const response =
+await fetch(
+USER_API + "?action=getAllUsers"
+);
+
+const result =
+await response.json();
+
+console.log(result);
+
+if(result.success){
+
+const data =
+result.data;
+
+document.getElementById(
+"totalSiswa"
+).innerText =
+data.length;
+
+let kelasX = 0;
+let kelasXI = 0;
+let kelasXII = 0;
+
+const kelasCount = {};
+
+data.forEach((item)=>{
+
+const kelas =
+item.kelas || "-";
+
+if(!kelasCount[kelas]){
+kelasCount[kelas] = 0;
+}
+
+kelasCount[kelas]++;
+
+if(kelas.startsWith("X ")){
+kelasX++;
+}
+
+if(kelas.startsWith("XI ")){
+kelasXI++;
+}
+
+if(kelas.startsWith("XII ")){
+kelasXII++;
+}
+
+});
+
+document.getElementById(
+"kelasX"
+).innerText =
+kelasX;
+
+document.getElementById(
+"kelasXI"
+).innerText =
+kelasXI;
+
+document.getElementById(
+"kelasXII"
+).innerText =
+kelasXII;
+
+const tbody =
+document.getElementById(
+"kelasTable"
+);
+
+tbody.innerHTML = "";
+
+Object.keys(kelasCount)
+.sort()
+.forEach((kelas)=>{
+
+tbody.innerHTML += `
+<tr>
+<td class="py-4 font-medium text-slate-700">
+${kelas}
+</td>
+
+<td class="py-4 text-right font-bold text-primary">
+${kelasCount[kelas]}
+</td>
+</tr>
+`;
+
+});
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+
+/*
+========================================
+LOAD MAPEL
+========================================
+*/
+
+async function loadMapel(){
+
+try{
+
+const response =
+await fetch(
+MAPEL_API + "?action=getMapel"
+);
+
+const result =
+await response.json();
+
+console.log(result);
+
+if(result.success){
+
+const tbody =
+document.getElementById(
+"mapelTable"
+);
+
+tbody.innerHTML = "";
+
+result.data.forEach((item)=>{
+
+let badge =
+"bg-red-50 text-red-700";
+
+if(
+item.status.toLowerCase() === "aktif"
+){
+badge =
+"bg-green-50 text-green-700";
+}
+
+tbody.innerHTML += `
+<tr>
+
+<td class="py-4 font-medium text-slate-700">
+${item.tanggal}
+</td>
+
+<td class="py-4 text-slate-600">
+${item.jam}
+</td>
+
+<td class="py-4 text-slate-700">
+${item.nama_mapel}
+</td>
+
+<td class="py-4">
+
+<span class="px-3 py-1 rounded-full ${badge} text-xs font-bold uppercase">
+${item.status}
+</span>
+
+</td>
+
+</tr>
+`;
+
+});
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+
+/*
+========================================
+INIT
+========================================
+*/
+
+loadSiswa();
+loadMapel();
+
+
+/*
+========================================
+LOGOUT
+========================================
+*/
+
+document
+.getElementById("logoutBtn")
+.addEventListener("click",()=>{
+
+localStorage.clear();
+
+window.location.href =
+"index.html";
+
+});
+
+</script>
+
+</body>
+</html>
