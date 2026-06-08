@@ -1,20 +1,17 @@
+```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0d6efd">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Login CBT - SMKS 1 BARUNAWATI</title>
+<title>CBT SMKS 1 BARUNAWATI</title>
 
-<!-- GOOGLE FONT -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#001e52">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<!-- TAILWIND -->
+<!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
@@ -22,10 +19,7 @@ tailwind.config = {
   theme: {
     extend: {
       colors: {
-        primary: '#0037a3'
-      },
-      fontFamily: {
-        sans: ['Plus Jakarta Sans', 'sans-serif']
+        primary: '#001e52'
       }
     }
   }
@@ -33,417 +27,265 @@ tailwind.config = {
 </script>
 
 <style>
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html,body{
-  height:100%;
-  overflow:hidden;
-}
-
 body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:#f5f8ff;
-  position:relative;
-  display:flex;
-  flex-direction:column;
-}
-
-/* BACKGROUND */
-.bg-wave{
-  position:fixed;
-  bottom:0;
-  left:0;
-  width:100%;
-  height:42vh;
-  background:linear-gradient(135deg,#0037a3 0%,#001d56 100%);
-  clip-path:ellipse(120% 100% at 50% 100%);
-  z-index:-2;
-}
-
-.dot{
-  position:absolute;
-  width:180px;
-  height:180px;
-  opacity:.15;
-  background-image:radial-gradient(#cbd5e1 2px,transparent 2px);
-  background-size:18px 18px;
-}
-
-.dot1{
-  top:40px;
-  left:40px;
-}
-
-.dot2{
-  right:40px;
-  bottom:120px;
-}
-
-.login-card{
-  background:rgba(255,255,255,.96);
-  backdrop-filter:blur(12px);
-  box-shadow:
-  0 20px 40px rgba(0,0,0,.08),
-  0 5px 10px rgba(0,0,0,.04);
+    background: linear-gradient(
+      135deg,
+      #f5f7fb 0%,
+      #eef3ff 100%
+    );
 }
 
 .input-focus:focus-within{
-  border-color:#0037a3;
-  box-shadow:0 0 0 4px rgba(0,55,163,.08);
+    border-color:#001e52;
+    box-shadow:0 0 0 3px rgba(0,30,82,.1);
 }
 
-.loading{
-  animation:pulse 1s infinite;
+.fade{
+    animation:fade .3s ease;
 }
 
-@keyframes pulse{
-  0%{opacity:.5}
-  50%{opacity:1}
-  100%{opacity:.5}
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
-
 </style>
 
 </head>
+<body class="min-h-screen flex items-center justify-center px-4">
 
-<body>
+<div class="w-full max-w-md">
 
-<!-- HEADER -->
-<header class="w-full pt-6 pb-2 flex justify-center items-center z-10">
+    <!-- CARD -->
+    <div class="bg-white rounded-3xl shadow-xl p-8 fade">
 
-  <div class="flex items-center gap-4">
+        <!-- HEADER -->
+        <div class="flex items-center gap-4 mb-8">
 
-    <div class="w-14 h-14 rounded-xl bg-white shadow-md flex items-center justify-center overflow-hidden p-1">
+            <div class="w-14 h-14 rounded-xl bg-white shadow-md flex items-center justify-center overflow-hidden p-1">
 
-      <!-- GANTI LOGO -->
-      <img src="LOGO YSL TERBARU.jpg"
-           class="w-full h-full object-contain">
+                <img
+                    src="LOGO YSL TERBARU.jpg"
+                    alt="Logo Sekolah"
+                    class="w-full h-full object-contain"
+                >
+
+            </div>
+
+            <div class="border-l-2 border-primary pl-3">
+
+                <h1 class="text-lg md:text-xl font-bold text-primary">
+                    SMKS 1 BARUNAWATI
+                </h1>
+
+                <p class="text-sm text-primary/80 font-medium">
+                    Computer Based Test
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- WELCOME -->
+        <h2 class="text-3xl font-bold text-primary mb-2">
+            Selamat Datang
+        </h2>
+
+        <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-8">
+            Silakan login menggunakan username dan password yang telah diberikan oleh administrator.
+        </p>
+
+        <!-- FORM LOGIN -->
+        <form id="loginForm" class="space-y-4">
+
+            <!-- USERNAME -->
+            <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white transition-all input-focus">
+
+                <svg class="w-5 h-5 text-gray-400 mr-2"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+
+                <input
+                    type="text"
+                    id="username"
+                    required
+                    placeholder="Username"
+                    class="w-full outline-none"
+                >
+
+            </div>
+
+            <!-- PASSWORD -->
+            <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white transition-all input-focus">
+
+                <svg class="w-5 h-5 text-gray-400 mr-2"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+
+                <input
+                    type="password"
+                    id="password"
+                    required
+                    placeholder="Password"
+                    class="w-full outline-none"
+                >
+
+                <button
+                    type="button"
+                    onclick="togglePassword()"
+                    class="ml-2 text-gray-500 hover:text-primary">
+
+                    👁
+
+                </button>
+
+            </div>
+
+            <!-- LOGIN -->
+            <button
+                type="submit"
+                id="loginBtn"
+                class="w-full bg-primary hover:bg-blue-900 text-white py-3 rounded-xl font-semibold transition">
+
+                Login
+
+            </button>
+
+            <!-- INSTALL PWA -->
+            <button
+                type="button"
+                id="installBtn"
+                hidden
+                class="w-full border border-primary text-primary py-3 rounded-xl font-semibold hover:bg-primary hover:text-white transition">
+
+                📲 Install Aplikasi
+
+            </button>
+
+        </form>
+
+        <!-- ALERT -->
+        <div
+            id="alertBox"
+            class="hidden mt-5 rounded-xl px-4 py-3 text-sm">
+        </div>
 
     </div>
 
-    <div class="border-l-2 border-primary pl-3">
+    <!-- FOOTER -->
+    <div class="text-center mt-6 text-sm text-gray-500">
 
-      <h1 class="text-lg md:text-xl font-bold text-primary">
-        SMKS 1 BARUNAWATI
-      </h1>
-
-      <p class="text-sm text-primary/80 font-medium">
-        Computer Based Test
-      </p>
+        Powered by
+        <span class="font-bold text-primary">
+            SMKS 1 BARUNAWATI
+        </span>
+        Technology Center
 
     </div>
 
-  </div>
-
-</header>
-
-
-<!-- MAIN -->
-<main class="flex-1 flex items-center justify-center px-4 relative overflow-hidden">
-
-  <div class="dot dot1 hidden md:block"></div>
-  <div class="dot dot2 hidden md:block"></div>
-
-  <section class="login-card w-full max-w-md md:max-w-lg rounded-3xl p-8 md:p-10 text-center">
-
-    <h2 class="text-3xl font-bold text-[#001e52] mb-2">
-      Selamat Datang
-    </h2>
-
-    <p class="text-gray-500 text-sm md:text-base leading-relaxed mb-8">
-      Silahkan login menggunakan username dan password yang telah diberikan.
-    </p>
-
-
-    <!-- FORM -->
-    <form id="loginForm" class="space-y-4">
-
-      <!-- USERNAME -->
-      <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white transition-all input-focus">
-
-        <svg class="w-5 h-5 text-gray-400 mr-2"
-             fill="none"
-             stroke="currentColor"
-             viewBox="0 0 24 24">
-
-          <path stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
-          </path>
-
-        </svg>
-
-        <input
-          type="text"
-          id="username"
-          placeholder="Username"
-          required
-          class="w-full border-none outline-none focus:ring-0 text-gray-700"
-        >
-
-      </div>
-
-
-      <!-- PASSWORD -->
-      <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white transition-all input-focus">
-
-        <svg class="w-5 h-5 text-gray-400 mr-2"
-             fill="none"
-             stroke="currentColor"
-             viewBox="0 0 24 24">
-
-          <path stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
-          </path>
-
-        </svg>
-
-        <input
-          type="password"
-          id="password"
-          placeholder="Password"
-          required
-          class="w-full border-none outline-none focus:ring-0 text-gray-700"
-        >
-
-        <button type="button"
-                onclick="togglePassword()"
-                class="text-gray-400 hover:text-gray-600">
-
-          👁
-
-        </button>
-
-      </div>
-
-
-      <!-- BUTTON -->
-      <button
-        type="submit"
-        id="loginBtn"
-        class="w-full bg-primary hover:bg-[#00297a] text-white font-semibold py-3.5 rounded-xl transition-all shadow-lg shadow-blue-900/20">
-
-        Login
-
-      </button>
-
-    </form>
-
-
-    <!-- ALERT -->
-    <div id="alertBox"
-         class="hidden mt-5 rounded-xl px-4 py-3 text-sm text-left">
-    </div>
-
-  </section>
-
-</main>
-
-
-<!-- FOOTER -->
-<footer class="w-full py-4 flex justify-center text-white text-sm z-10">
-
-  <div class="opacity-90">
-
-    Powered by
-    <span class="font-bold">
-      SMKS 1 BARUNAWATI
-    </span>
-    Technology Center
-
-  </div>
-
-</footer>
-
-
-<div class="bg-wave"></div>
-
-
+</div>
 
 <script>
 
-// ========================================
-// GANTI DENGAN URL WEB APP APPS SCRIPT
-// ========================================
+/* SHOW PASSWORD */
+function togglePassword() {
 
-const WEB_APP_URL =
-"https://script.google.com/macros/s/AKfycbwoRPW1RHKRfsLsqbVvGm8MuFJNx65UaJnqx6Pz3MZBDU1kEx873JCPcVjYbqW_72Se/exec";
+    const input = document.getElementById('password');
 
-
-
-// ========================================
-// TOGGLE PASSWORD
-// ========================================
-
-function togglePassword(){
-
-  const password =
-  document.getElementById("password");
-
-  password.type =
-  password.type === "password"
-  ? "text"
-  : "password";
-
+    input.type =
+      input.type === 'password'
+      ? 'text'
+      : 'password';
 }
 
+/* LOGIN DEMO */
+document.getElementById('loginForm')
+.addEventListener('submit', function(e){
 
+    e.preventDefault();
 
-// ========================================
-// ELEMENT
-// ========================================
+    const alertBox =
+      document.getElementById('alertBox');
 
-const form =
-document.getElementById("loginForm");
+    alertBox.classList.remove('hidden');
 
-const alertBox =
-document.getElementById("alertBox");
+    alertBox.className =
+      'mt-5 rounded-xl px-4 py-3 text-sm bg-green-100 text-green-700';
 
-const loginBtn =
-document.getElementById("loginBtn");
+    alertBox.innerHTML =
+      'Login berhasil. Silakan hubungkan dengan Google Sheet atau database.';
+});
 
+/* SERVICE WORKER */
+if ('serviceWorker' in navigator) {
 
+    window.addEventListener('load', () => {
 
-// ========================================
-// ALERT
-// ========================================
+        navigator.serviceWorker
+        .register('./sw.js')
+        .then(() => {
 
-function showAlert(type,message){
+            console.log('Service Worker Registered');
 
-  alertBox.classList.remove("hidden");
+        })
+        .catch(err => {
 
-  alertBox.className =
-  `mt-5 rounded-xl px-4 py-3 text-sm text-left ${
-    type === "success"
-    ? "bg-green-50 text-green-700 border border-green-200"
-    : "bg-red-50 text-red-700 border border-red-200"
-  }`;
+            console.log(err);
 
-  alertBox.innerHTML = message;
+        });
 
-}
-
-
-
-// ========================================
-// LOGIN
-// ========================================
-
-form.addEventListener("submit", async(e)=>{
-
-  e.preventDefault();
-
-  const username =
-  document.getElementById("username").value.trim();
-
-  const password =
-  document.getElementById("password").value.trim();
-
-  if(!username || !password){
-
-    showAlert("error","Username dan password wajib diisi");
-
-    return;
-
-  }
-
-  loginBtn.innerHTML = "Memproses...";
-  loginBtn.disabled = true;
-  loginBtn.classList.add("loading");
-
-  try{
-
-    const body = new URLSearchParams();
-
-    body.append("action","login");
-    body.append("username",username);
-    body.append("password",password);
-
-    const response = await fetch(WEB_APP_URL,{
-      method:"POST",
-      body:body
     });
 
-    const result = await response.json();
+}
 
-    if(result.success){
+/* INSTALL PWA */
+let deferredPrompt;
 
-      // SAVE SESSION
-      localStorage.setItem("username",result.data.username);
-      localStorage.setItem("role",result.data.role);
-      localStorage.setItem("nama",result.data.nama);
-      localStorage.setItem("kelas",result.data.kelas);
-      localStorage.setItem("nisn",result.data.nisn);
+window.addEventListener(
+'beforeinstallprompt',
+(e)=>{
 
-      showAlert(
-        "success",
-        `Login berhasil.<br>Selamat datang <b>${result.data.nama}</b>`
-      );
+    e.preventDefault();
 
-      setTimeout(()=>{
+    deferredPrompt = e;
 
-        if(result.data.role === "admin"){
+    const btn =
+      document.getElementById('installBtn');
 
-          window.location.href = "admin.html";
-
-        }else{
-
-          window.location.href = "siswa.html";
-
-        }
-
-      },1500);
-
-    }else{
-
-      showAlert("error",result.message);
-
-    }
-
-  }catch(err){
-
-    console.log(err);
-
-    showAlert(
-      "error",
-      "Server gagal dihubungi"
-    );
-
-  }
-
-  loginBtn.innerHTML = "Login";
-  loginBtn.disabled = false;
-  loginBtn.classList.remove("loading");
+    btn.hidden = false;
 
 });
 
+document
+.getElementById('installBtn')
+.addEventListener('click', async ()=>{
 
+    if(!deferredPrompt) return;
 
-// ========================================
-// AUTO LOGOUT
-// ========================================
+    deferredPrompt.prompt();
 
-window.addEventListener("beforeunload",()=>{
+    await deferredPrompt.userChoice;
 
-  const username =
-  localStorage.getItem("username");
-
-  if(!username) return;
-
-  const body = new URLSearchParams();
-
-  body.append("action","logout");
-  body.append("username",username);
-
-  navigator.sendBeacon(WEB_APP_URL,body);
+    deferredPrompt = null;
 
 });
 
@@ -451,3 +293,4 @@ window.addEventListener("beforeunload",()=>{
 
 </body>
 </html>
+```
