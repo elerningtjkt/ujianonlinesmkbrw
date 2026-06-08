@@ -1,7 +1,7 @@
 {
   "name": "CBT SMKS 1 BARUNAWATI",
-  "short_name": "CBT",
-  "start_url": "./",
+  "short_name": "CBT BARUNAWATI",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
