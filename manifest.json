@@ -1,22 +1,22 @@
 {
   "name": "CBT SMKS 1 BARUNAWATI",
   "short_name": "CBT",
-  "start_url": "/ujianonlinesmkbrw/",
-  "scope": "/ujianonlinesmkbrw/",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#001e52",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "LOGO YSL TERBARU.jpg",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg"
+      "type": "image/png"
     },
     {
-      "src": "LOGO YSL TERBARU.jpg",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg"
+      "type": "image/png"
     }
   ]
 }
