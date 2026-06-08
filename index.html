@@ -6,34 +6,26 @@
 
 <title>Login CBT - SMKS 1 BARUNAWATI</title>
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0037a3">
 
-<!-- IOS SUPPORT -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="CBT BARUNAWATI">
 
-<!-- GOOGLE FONT -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<!-- TAILWIND -->
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
 tailwind.config = {
   theme: {
     extend: {
-      colors: {
-        primary: '#0037a3'
-      },
-      fontFamily: {
-        sans: ['Plus Jakarta Sans', 'sans-serif']
-      }
+      colors: { primary: '#0037a3' },
+      fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
     }
   }
 }
@@ -49,6 +41,16 @@ tailwind.config = {
 html,body{
   height:100%;
   overflow:hidden;
+  -webkit-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
+
+/* IZINKAN INPUT */
+input, textarea{
+  -webkit-user-select:text;
+  -ms-user-select:text;
+  user-select:text;
 }
 
 body{
@@ -92,21 +94,12 @@ body{
   border-color:#0037a3;
   box-shadow:0 0 0 4px rgba(0,55,163,.08);
 }
-
-.loading{ animation:pulse 1s infinite; }
-
-@keyframes pulse{
-  0%{opacity:.5}
-  50%{opacity:1}
-  100%{opacity:.5}
-}
 </style>
 
 </head>
 
 <body>
 
-<!-- HEADER -->
 <header class="w-full pt-6 pb-2 flex justify-center items-center z-10">
 
   <div class="flex items-center gap-4">
@@ -128,7 +121,6 @@ body{
 
 </header>
 
-<!-- MAIN -->
 <main class="flex-1 flex items-center justify-center px-4 relative overflow-hidden">
 
   <div class="dot dot1 hidden md:block"></div>
@@ -136,9 +128,7 @@ body{
 
   <section class="login-card w-full max-w-md md:max-w-lg rounded-3xl p-8 md:p-10 text-center">
 
-    <h2 class="text-3xl font-bold text-[#001e52] mb-2">
-      Selamat Datang
-    </h2>
+    <h2 class="text-3xl font-bold text-[#001e52] mb-2">Selamat Datang</h2>
 
     <p class="text-gray-500 text-sm md:text-base mb-8">
       Silahkan login menggunakan username dan password yang telah diberikan.
@@ -146,12 +136,10 @@ body{
 
     <form id="loginForm" class="space-y-4">
 
-      <!-- USERNAME -->
       <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white input-focus">
         <input type="text" id="username" placeholder="Username" required class="w-full outline-none">
       </div>
 
-      <!-- PASSWORD -->
       <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white input-focus">
 
         <input type="password" id="password" placeholder="Password" required class="w-full outline-none">
@@ -160,9 +148,8 @@ body{
 
       </div>
 
-      <button type="submit" id="loginBtn"
+      <button type="submit"
         class="w-full bg-primary text-white font-semibold py-3 rounded-xl">
-
         Login
       </button>
 
@@ -174,14 +161,12 @@ body{
 
 </main>
 
-<!-- FOOTER -->
 <footer class="w-full py-4 flex justify-center text-white text-sm z-10">
   Powered by <b>SMKS 1 BARUNAWATI</b>
 </footer>
 
 <div class="bg-wave"></div>
 
-<!-- INSTALL PWA -->
 <button id="installBtn" hidden
   class="fixed bottom-5 right-5 bg-primary text-white px-4 py-3 rounded-xl shadow-lg z-50">
   Install Aplikasi
@@ -192,7 +177,7 @@ body{
 // ================= WEB APP =================
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwoRPW1RHKRfsLsqbVvGm8MuFJNx65UaJnqx6Pz3MZBDU1kEx873JCPcVjYbqW_72Se/exec";
 
-// PASSWORD TOGGLE
+// TOGGLE PASSWORD
 function togglePassword(){
   const p = document.getElementById("password");
   p.type = p.type === "password" ? "text" : "password";
@@ -256,8 +241,32 @@ document.getElementById("installBtn").addEventListener("click",async()=>{
   deferredPrompt = null;
 });
 
-window.addEventListener("appinstalled",()=>{
-  console.log("PWA terinstall");
+// ================= SECURITY LAYER =================
+
+// disable right click
+document.addEventListener("contextmenu", e => e.preventDefault());
+
+// disable copy paste cut
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("cut", e => e.preventDefault());
+document.addEventListener("paste", e => e.preventDefault());
+
+// disable devtools shortcuts
+document.addEventListener("keydown", function(e){
+
+  if(e.ctrlKey && ["c","v","u","s","p"].includes(e.key.toLowerCase())){
+    e.preventDefault();
+  }
+
+  if(e.key === "F12"){
+    e.preventDefault();
+  }
+
+  if(e.ctrlKey && e.shiftKey){
+    if(["i","j","c"].includes(e.key.toLowerCase())){
+      e.preventDefault();
+    }
+  }
 });
 
 </script>
