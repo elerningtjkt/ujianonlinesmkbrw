@@ -16,12 +16,9 @@
 
 <style>
 
-*{
-  box-sizing:border-box;
-}
+*{ box-sizing:border-box; }
 
-html,
-body{
+html,body{
   width:100%;
   height:100%;
   overflow:hidden;
@@ -33,7 +30,6 @@ body{
 }
 
 /* LOADING */
-
 #loading{
   position:fixed;
   inset:0;
@@ -56,29 +52,16 @@ body{
 }
 
 @keyframes spin{
-  100%{
-    transform:rotate(360deg);
-  }
+  100%{ transform:rotate(360deg); }
 }
 
 /* TIMER */
-
-.timerPulse{
-  animation:pulse 1s infinite;
-}
+.timerPulse{ animation:pulse 1s infinite; }
 
 @keyframes pulse{
-  0%{
-    opacity:1;
-  }
-
-  50%{
-    opacity:.6;
-  }
-
-  100%{
-    opacity:1;
-  }
+  0%{opacity:1}
+  50%{opacity:.6}
+  100%{opacity:1}
 }
 
 </style>
@@ -88,300 +71,164 @@ body{
 <body>
 
 <!-- LOADING -->
-
 <div id="loading">
-
-<div class="loader"></div>
-
-<p class="text-slate-600 text-sm font-medium">
-Memuat halaman ujian...
-</p>
-
+  <div class="loader"></div>
+  <p class="text-slate-600 text-sm font-medium">Memuat halaman ujian...</p>
 </div>
 
 <!-- WRAPPER -->
-
 <div class="w-full h-screen flex flex-col">
 
 <!-- HEADER -->
-
-<header class="h-16 bg-blue-900 text-white flex items-center justify-center shadow-lg relative shrink-0">
-
-<h1 class="font-extrabold tracking-wide text-lg md:text-xl">
-CBT UJIAN ONLINE
-</h1>
-
+<header class="h-16 bg-blue-900 text-white flex items-center justify-center shadow-lg">
+  <h1 class="font-extrabold text-lg md:text-xl">CBT UJIAN ONLINE</h1>
 </header>
 
 <!-- TOP BAR -->
+<div class="px-3 pt-3">
 
-<div class="px-3 pt-3 shrink-0">
+<div class="bg-white rounded-2xl shadow-sm border px-4 py-3 flex justify-between">
 
-<div class="bg-white rounded-2xl shadow-sm border border-slate-200 px-4 py-3 flex items-center justify-between gap-3">
+  <div>
+    <p class="text-xs text-slate-400">MATA PELAJARAN</p>
+    <h2 id="mapelText" class="font-bold text-slate-700">Loading...</h2>
+  </div>
 
-<!-- LEFT -->
+  <div class="flex gap-2 items-center">
 
-<div class="min-w-0">
+    <div id="timerBox" class="bg-blue-50 text-blue-800 px-4 h-11 flex items-center rounded-xl border">
+      ⏱ <span id="timer" class="font-bold ml-2">00:00:00</span>
+    </div>
 
-<p class="text-xs text-slate-400 font-medium">
-MATA PELAJARAN
-</p>
+    <button id="refreshBtn" class="w-11 h-11 bg-white border rounded-xl">⟳</button>
 
-<h2
-id="mapelText"
-class="font-bold text-slate-700 truncate text-sm md:text-base">
-
-Loading...
-
-</h2>
-
-</div>
-
-<!-- RIGHT -->
-
-<div class="flex items-center gap-2">
-
-<!-- TIMER -->
-
-<div
-id="timerBox"
-class="bg-blue-50 text-blue-800 rounded-xl px-4 h-11 flex items-center gap-2 border border-blue-100">
-
-<svg xmlns="http://www.w3.org/2000/svg"
-class="w-5 h-5"
-fill="none"
-viewBox="0 0 24 24"
-stroke="currentColor">
-
-<path
-stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-
-</svg>
-
-<span
-id="timer"
-class="font-bold text-sm">
-
-00:00:00
-
-</span>
-
-</div>
-
-<!-- REFRESH -->
-
-<button
-id="refreshBtn"
-class="w-11 h-11 rounded-2xl bg-white text-blue-900 flex items-center justify-center shadow-sm border border-slate-200 hover:bg-blue-50 active:scale-90 transition-all duration-300">
-
-<!-- ICON REFRESH -->
-
-<svg xmlns="http://www.w3.org/2000/svg"
-class="w-5 h-5"
-fill="none"
-viewBox="0 0 24 24"
-stroke="currentColor">
-
-<path
-stroke-linecap="round"
-stroke-linejoin="round"
-stroke-width="2"
-d="M4 4v5h.582M20 20v-5h-.581M5.23 9A9 9 0 0119 6.34L20 9m-1.23 6A9 9 0 015 17.66L4 15"/>
-
-</svg>
-
-</button>
-
-</div>
+  </div>
 
 </div>
 
 </div>
 
 <!-- IFRAME -->
-
-<div class="flex-1 p-3 pt-3 min-h-0">
-
-<div class="w-full h-full bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200">
-
-<iframe
-id="examFrame"
-class="w-full h-full border-0"
-allowfullscreen>
-
-</iframe>
-
-</div>
-
+<div class="flex-1 p-3">
+  <iframe id="examFrame" class="w-full h-full border-0 rounded-2xl bg-white"></iframe>
 </div>
 
 </div>
 
 <script>
 
-/*
-========================================
-SESSION
-========================================
-*/
+/* =========================
+   SESSION VALIDASI
+========================= */
 
-const username =
-localStorage.getItem("username");
+const username = localStorage.getItem("username");
+const linkSoal = localStorage.getItem("link_soal");
+const namaMapel = localStorage.getItem("nama_mapel");
 
-const linkSoal =
-localStorage.getItem("link_soal");
-
-const namaMapel =
-localStorage.getItem("nama_mapel");
-
-
-/*
-========================================
-VALIDASI
-========================================
-*/
-
-if(
-  !username ||
-  !linkSoal ||
-  !namaMapel
-){
-
-  window.location.href =
-  "index.html";
-
+if(!username || !linkSoal || !namaMapel){
+  window.location.href = "index.html";
 }
 
+/* =========================
+   LOAD SOAL
+========================= */
 
-/*
-========================================
-ELEMENT
-========================================
-*/
+document.getElementById("mapelText").innerText = namaMapel;
+document.getElementById("examFrame").src = linkSoal;
 
-const iframe =
-document.getElementById("examFrame");
+/* =========================
+   LOADING HIDE
+========================= */
 
-const mapelText =
-document.getElementById("mapelText");
-
-const loading =
-document.getElementById("loading");
-
-const refreshBtn =
-document.getElementById("refreshBtn");
-
-const timerText =
-document.getElementById("timer");
-
-const timerBox =
-document.getElementById("timerBox");
-
-
-/*
-========================================
-LOAD EXAM
-========================================
-*/
-
-function loadExam(){
-
-  mapelText.innerText =
-  namaMapel;
-
-  iframe.src =
-  linkSoal;
-
-}
-
-loadExam();
-
-
-/*
-========================================
-REFRESH SOAL
-========================================
-*/
-
-refreshBtn.addEventListener(
-  "click",
-  ()=>{
-
-    iframe.src =
-    iframe.src;
-
-  }
-);
-
-
-/*
-========================================
-HIDE LOADING
-========================================
-*/
-
-iframe.onload = function(){
-
-  loading.style.display =
-  "none";
-
+document.getElementById("examFrame").onload = () => {
+  document.getElementById("loading").style.display = "none";
 };
 
+/* =========================
+   REFRESH
+========================= */
 
-/*
-========================================
-TIMER
-========================================
-*/
+document.getElementById("refreshBtn").onclick = () => {
+  document.getElementById("examFrame").src = linkSoal;
+};
+
+/* =========================
+   TIMER
+========================= */
 
 let totalSeconds = 0;
 
-function updateTimer(){
-
+setInterval(() => {
   totalSeconds++;
 
-  const hours =
-  String(
-    Math.floor(totalSeconds / 3600)
-  ).padStart(2,"0");
+  let h = String(Math.floor(totalSeconds/3600)).padStart(2,"0");
+  let m = String(Math.floor((totalSeconds%3600)/60)).padStart(2,"0");
+  let s = String(totalSeconds%60).padStart(2,"0");
 
-  const minutes =
-  String(
-    Math.floor((totalSeconds % 3600) / 60)
-  ).padStart(2,"0");
+  document.getElementById("timer").innerText = `${h}:${m}:${s}`;
 
-  const seconds =
-  String(
-    totalSeconds % 60
-  ).padStart(2,"0");
+},1000);
 
-  timerText.innerText =
-  `${hours}:${minutes}:${seconds}`;
+/* =========================
+   🔐 LEVEL 2 ANTI CHEAT
+========================= */
 
-  // WARNA SAAT LAMA
-  if(totalSeconds >= 3600){
+/* Disable Right Click */
+document.addEventListener("contextmenu", e => e.preventDefault());
 
-    timerBox.classList.remove(
-      "bg-blue-50",
-      "text-blue-800",
-      "border-blue-100"
-    );
+/* Disable DevTools */
+document.addEventListener("keydown", function(e){
 
-    timerBox.classList.add(
-      "bg-red-50",
-      "text-red-700",
-      "border-red-100",
-      "timerPulse"
-    );
+  if(e.key === "F12") e.preventDefault();
 
+  if(e.ctrlKey && e.shiftKey &&
+    ["I","J","C"].includes(e.key.toUpperCase())
+  ){
+    e.preventDefault();
   }
 
+  if(e.ctrlKey && e.key.toLowerCase()==="u"){
+    e.preventDefault();
+  }
+
+});
+
+/* Anti Copy */
+document.addEventListener("copy", e => e.preventDefault());
+document.addEventListener("cut", e => e.preventDefault());
+document.addEventListener("paste", e => e.preventDefault());
+
+/* Tab Switch Detection */
+let cheatCount = 0;
+
+document.addEventListener("visibilitychange", () => {
+  if(document.hidden){
+    cheatCount++;
+    alert("⚠ Jangan pindah tab!");
+
+    if(cheatCount >= 3){
+      alert("❌ Anda keluar dari ujian");
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  }
+});
+
+/* Fullscreen Lock */
+function fullscreen(){
+  let el = document.documentElement;
+  if(el.requestFullscreen) el.requestFullscreen();
 }
 
-setInterval(updateTimer,1000);
+window.addEventListener("load", () => {
+  setTimeout(fullscreen, 1000);
+});
+
+document.addEventListener("fullscreenchange", () => {
+  if(!document.fullscreenElement){
+    fullscreen();
+  }
+});
 
 </script>
 
