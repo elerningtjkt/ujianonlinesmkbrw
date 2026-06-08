@@ -11,13 +11,8 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="CBT BARUNAWATI">
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
@@ -32,33 +27,24 @@ tailwind.config = {
 </script>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
 
 html,body{
   height:100%;
   overflow:hidden;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#f5f8ff;
+}
+
+/* Anti copy TEXT saja (tidak ganggu input) */
+body{
   -webkit-user-select:none;
-  -ms-user-select:none;
   user-select:none;
 }
 
-/* IZINKAN INPUT */
-input, textarea{
+input,textarea{
   -webkit-user-select:text;
-  -ms-user-select:text;
   user-select:text;
-}
-
-body{
-  font-family:'Plus Jakarta Sans',sans-serif;
-  background:#f5f8ff;
-  position:relative;
-  display:flex;
-  flex-direction:column;
 }
 
 .bg-wave{
@@ -67,32 +53,15 @@ body{
   left:0;
   width:100%;
   height:42vh;
-  background:linear-gradient(135deg,#0037a3 0%,#001d56 100%);
+  background:linear-gradient(135deg,#0037a3,#001d56);
   clip-path:ellipse(120% 100% at 50% 100%);
-  z-index:-2;
+  z-index:-1;
 }
-
-.dot{
-  position:absolute;
-  width:180px;
-  height:180px;
-  opacity:.15;
-  background-image:radial-gradient(#cbd5e1 2px,transparent 2px);
-  background-size:18px 18px;
-}
-
-.dot1{ top:40px; left:40px; }
-.dot2{ right:40px; bottom:120px; }
 
 .login-card{
   background:rgba(255,255,255,.96);
   backdrop-filter:blur(12px);
-  box-shadow:0 20px 40px rgba(0,0,0,.08),0 5px 10px rgba(0,0,0,.04);
-}
-
-.input-focus:focus-within{
-  border-color:#0037a3;
-  box-shadow:0 0 0 4px rgba(0,55,163,.08);
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
 }
 </style>
 
@@ -100,173 +69,117 @@ body{
 
 <body>
 
-<header class="w-full pt-6 pb-2 flex justify-center items-center z-10">
-
+<header class="w-full pt-6 flex justify-center">
   <div class="flex items-center gap-4">
-
-    <div class="w-14 h-14 rounded-xl bg-white shadow-md flex items-center justify-center overflow-hidden p-1">
-      <img src="LOGO YSL TERBARU.jpg" class="w-full h-full object-contain">
-    </div>
-
+    <img src="LOGO YSL TERBARU.jpg" class="w-14 h-14 rounded-xl bg-white p-1 shadow">
     <div class="border-l-2 border-primary pl-3">
-      <h1 class="text-lg md:text-xl font-bold text-primary">
-        SMKS 1 BARUNAWATI
-      </h1>
-      <p class="text-sm text-primary/80 font-medium">
-        Computer Based Test
-      </p>
+      <h1 class="text-primary font-bold text-lg">SMKS 1 BARUNAWATI</h1>
+      <p class="text-primary/70 text-sm">Computer Based Test</p>
     </div>
-
   </div>
-
 </header>
 
-<main class="flex-1 flex items-center justify-center px-4 relative overflow-hidden">
+<main class="flex-1 flex items-center justify-center px-4">
 
-  <div class="dot dot1 hidden md:block"></div>
-  <div class="dot dot2 hidden md:block"></div>
+<section class="login-card w-full max-w-md p-8 rounded-3xl text-center">
 
-  <section class="login-card w-full max-w-md md:max-w-lg rounded-3xl p-8 md:p-10 text-center">
+<h2 class="text-3xl font-bold text-[#001e52]">Selamat Datang</h2>
+<p class="text-gray-500 mt-2 mb-6 text-sm">
+Silahkan login menggunakan username dan password
+</p>
 
-    <h2 class="text-3xl font-bold text-[#001e52] mb-2">Selamat Datang</h2>
+<form id="loginForm" class="space-y-4">
 
-    <p class="text-gray-500 text-sm md:text-base mb-8">
-      Silahkan login menggunakan username dan password yang telah diberikan.
-    </p>
+<input id="username" class="w-full border rounded-xl px-4 py-3 outline-none" placeholder="Username" required>
 
-    <form id="loginForm" class="space-y-4">
+<div class="flex border rounded-xl px-4 py-3 bg-white">
+<input id="password" type="password" class="w-full outline-none" placeholder="Password" required>
+<button type="button" onclick="togglePassword()">👁</button>
+</div>
 
-      <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white input-focus">
-        <input type="text" id="username" placeholder="Username" required class="w-full outline-none">
-      </div>
+<button class="w-full bg-primary text-white py-3 rounded-xl font-semibold">
+Login
+</button>
 
-      <div class="border border-gray-200 rounded-xl px-4 py-3 flex items-center bg-white input-focus">
+</form>
 
-        <input type="password" id="password" placeholder="Password" required class="w-full outline-none">
+<div id="alertBox" class="hidden mt-4 text-sm"></div>
 
-        <button type="button" onclick="togglePassword()">👁</button>
-
-      </div>
-
-      <button type="submit"
-        class="w-full bg-primary text-white font-semibold py-3 rounded-xl">
-        Login
-      </button>
-
-    </form>
-
-    <div id="alertBox" class="hidden mt-5 rounded-xl px-4 py-3 text-sm"></div>
-
-  </section>
+</section>
 
 </main>
 
-<footer class="w-full py-4 flex justify-center text-white text-sm z-10">
-  Powered by <b>SMKS 1 BARUNAWATI</b>
-</footer>
-
 <div class="bg-wave"></div>
-
-<button id="installBtn" hidden
-  class="fixed bottom-5 right-5 bg-primary text-white px-4 py-3 rounded-xl shadow-lg z-50">
-  Install Aplikasi
-</button>
 
 <script>
 
-// ================= WEB APP =================
+// ================= LOGIN =================
 const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwoRPW1RHKRfsLsqbVvGm8MuFJNx65UaJnqx6Pz3MZBDU1kEx873JCPcVjYbqW_72Se/exec";
 
-// TOGGLE PASSWORD
 function togglePassword(){
   const p = document.getElementById("password");
   p.type = p.type === "password" ? "text" : "password";
 }
 
-// ALERT
-function showAlert(type,message){
+function showAlert(msg,type="error"){
   const box = document.getElementById("alertBox");
   box.classList.remove("hidden");
-  box.className = "mt-5 px-4 py-3 rounded-xl text-sm " +
-    (type==="success"
-      ? "bg-green-50 text-green-700"
-      : "bg-red-50 text-red-700");
-
-  box.innerHTML = message;
+  box.className = type==="success"
+    ? "mt-4 text-green-600"
+    : "mt-4 text-red-600";
+  box.innerText = msg;
 }
 
-// LOGIN
 document.getElementById("loginForm").addEventListener("submit", async (e)=>{
   e.preventDefault();
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
   const body = new URLSearchParams();
   body.append("action","login");
-  body.append("username",username);
-  body.append("password",password);
+  body.append("username",username.value);
+  body.append("password",password.value);
 
   const res = await fetch(WEB_APP_URL,{method:"POST",body});
   const data = await res.json();
 
   if(data.success){
     localStorage.setItem("username",data.data.username);
-    window.location.href = data.data.role === "admin" ? "admin.html" : "siswa.html";
+    location.href = data.data.role==="admin"?"admin.html":"siswa.html";
   }else{
-    showAlert("error",data.message);
+    showAlert(data.message);
   }
 });
 
-// SERVICE WORKER
-if("serviceWorker" in navigator){
-  window.addEventListener("load",()=>{
-    navigator.serviceWorker.register("./sw.js", { scope: "./" });
-  });
-}
 
-// PWA INSTALL
-let deferredPrompt;
+// ================= SECURITY (REALISTIC CBT) =================
 
-window.addEventListener("beforeinstallprompt",(e)=>{
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById("installBtn").hidden = false;
-});
-
-document.getElementById("installBtn").addEventListener("click",async()=>{
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  await deferredPrompt.userChoice;
-  deferredPrompt = null;
-});
-
-// ================= SECURITY LAYER =================
+// disable copy paste
+document.addEventListener("copy",e=>e.preventDefault());
+document.addEventListener("cut",e=>e.preventDefault());
+document.addEventListener("paste",e=>e.preventDefault());
 
 // disable right click
-document.addEventListener("contextmenu", e => e.preventDefault());
+document.addEventListener("contextmenu",e=>e.preventDefault());
 
-// disable copy paste cut
-document.addEventListener("copy", e => e.preventDefault());
-document.addEventListener("cut", e => e.preventDefault());
-document.addEventListener("paste", e => e.preventDefault());
+// disable selection
+document.addEventListener("selectstart",e=>e.preventDefault());
 
-// disable devtools shortcuts
-document.addEventListener("keydown", function(e){
+// block devtools shortcut (best effort)
+document.addEventListener("keydown",function(e){
 
-  if(e.ctrlKey && ["c","v","u","s","p"].includes(e.key.toLowerCase())){
-    e.preventDefault();
-  }
-
-  if(e.key === "F12"){
-    e.preventDefault();
-  }
+  if(e.key==="F12") e.preventDefault();
 
   if(e.ctrlKey && e.shiftKey){
     if(["i","j","c"].includes(e.key.toLowerCase())){
       e.preventDefault();
     }
   }
+
+  if(e.ctrlKey){
+    if(["u","s"].includes(e.key.toLowerCase())){
+      e.preventDefault();
+    }
+  }
+
 });
 
 </script>
